@@ -95,6 +95,7 @@ const App: React.FC = () => {
     worldDefinition: "A sprawling megacity in 2142 where memories can be bought and sold.",
     protagonistMale: "Jax",
     protagonistFemale: "Elora",
+    supportingCharacters: "Riko (Tech Specialist), Silas (Memory Broker)",
     storyOutline: "Jax, a memory dealer, finds a corrupted file that belongs to Elora, a girl who doesn't exist in the city's database.",
     narrativeStyle: "Cyberpunk Noir",
     artStyle: "Cinematic 3D Render",

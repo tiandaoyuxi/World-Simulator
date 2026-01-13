@@ -16,6 +16,7 @@ export interface WorldConfig {
   worldDefinition: string;
   protagonistMale: string;
   protagonistFemale: string;
+  supportingCharacters: string;
   storyOutline: string;
   narrativeStyle: string;
   artStyle: string;

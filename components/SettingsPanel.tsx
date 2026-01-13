@@ -9,6 +9,20 @@ interface Props {
   language: Language;
 }
 
+const NARRATIVE_PRESETS = [
+  "Cyberpunk Noir", "Epic High Fantasy", "Existential Horror", "Witty Romance", 
+  "Historical Drama", "Space Opera", "Lovecraftian Mystery", "Steampunk Adventure", 
+  "Hardboiled Detective", "Surrealist Dream", "Post-Apocalyptic Survival", "Magical Realism",
+  "Grimdark War", "Slice of Life", "Urban Fantasy"
+];
+
+const ART_PRESETS = [
+  "Cinematic 3D Render", "Hyper-Realistic", "Studio Ghibli Anime", "Oil Painting", 
+  "Dark Comic Book", "Cyberpunk Neon", "16-bit Pixel Art", "Watercolor", 
+  "Noir Photography", "Retro Sci-fi Poster", "Ukiyo-e Woodblock", "Renaissance Fresco",
+  "Unreal Engine 5", "Gothic Sketch", "Abstract Expressionism"
+];
+
 const SettingsPanel: React.FC<Props> = ({ config, setConfig, disabled, language }) => {
   const [activeTab, setActiveTab] = useState<'vars' | 'events'>('vars');
 
@@ -19,6 +33,8 @@ const SettingsPanel: React.FC<Props> = ({ config, setConfig, disabled, language 
     worldDef: language === 'en' ? 'World Definition' : '世界观定义',
     maleLead: language === 'en' ? 'Male Lead' : '男主角名',
     femaleLead: language === 'en' ? 'Female Lead' : '女主角名',
+    supportingChars: language === 'en' ? 'Supporting Characters' : '配角信息',
+    charsHint: language === 'en' ? 'Use commas to separate (e.g. Jack, Mary)' : '使用逗号分隔多个角色 (如: 张三, 李四)',
     outline: language === 'en' ? 'Story Outline' : '故事大纲',
     style: language === 'en' ? 'Narrative Style' : '叙事风格',
     art: language === 'en' ? 'Art Style' : '出图画风',
@@ -29,6 +45,7 @@ const SettingsPanel: React.FC<Props> = ({ config, setConfig, disabled, language 
     eventLabelZh: language === 'en' ? 'Label (ZH)' : '标签 (中文)',
     eventTextEn: language === 'en' ? 'Description (EN)' : '描述 (英文)',
     eventTextZh: language === 'en' ? 'Description (ZH)' : '描述 (中文)',
+    customInput: language === 'en' ? 'Type or select style...' : '输入或选择风格...',
   };
 
   const handleChange = (key: keyof WorldConfig, value: any) => {
@@ -112,6 +129,19 @@ const SettingsPanel: React.FC<Props> = ({ config, setConfig, disabled, language 
             </div>
 
             <div>
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{t.supportingChars}</label>
+              <input
+                type="text"
+                className="w-full mt-1 bg-slate-900 border border-slate-700 rounded-md p-2 text-sm focus:ring-1 focus:ring-indigo-500 outline-none"
+                value={config.supportingCharacters}
+                onChange={(e) => handleChange('supportingCharacters', e.target.value)}
+                disabled={disabled}
+                placeholder={t.charsHint}
+              />
+              <p className="text-[9px] text-slate-600 mt-1 italic">{t.charsHint}</p>
+            </div>
+
+            <div>
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{t.outline}</label>
               <textarea
                 className="w-full mt-1 bg-slate-900 border border-slate-700 rounded-md p-2 text-sm focus:ring-1 focus:ring-indigo-500 outline-none h-16 resize-none transition-all"
@@ -121,36 +151,51 @@ const SettingsPanel: React.FC<Props> = ({ config, setConfig, disabled, language 
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-4">
               <div>
                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{t.style}</label>
-                <select
-                  className="w-full mt-1 bg-slate-900 border border-slate-700 rounded-md p-2 text-xs focus:ring-1 focus:ring-indigo-500 outline-none"
+                <input
+                  type="text"
+                  className="w-full mt-1 bg-slate-900 border border-slate-700 rounded-md p-2 text-sm focus:ring-1 focus:ring-indigo-500 outline-none"
                   value={config.narrativeStyle}
                   onChange={(e) => handleChange('narrativeStyle', e.target.value)}
                   disabled={disabled}
-                >
-                  <option>Epic High Fantasy</option>
-                  <option>Cyberpunk Noir</option>
-                  <option>Witty Romance</option>
-                  <option>Existential Horror</option>
-                  <option>Historical Drama</option>
-                </select>
+                  placeholder={t.customInput}
+                />
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {NARRATIVE_PRESETS.map(preset => (
+                    <button
+                      key={preset}
+                      onClick={() => handleChange('narrativeStyle', preset)}
+                      className={`text-[9px] px-2 py-0.5 rounded border transition-colors ${config.narrativeStyle === preset ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600'}`}
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
               </div>
+
               <div>
                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{t.art}</label>
-                <select
-                  className="w-full mt-1 bg-slate-900 border border-slate-700 rounded-md p-2 text-xs focus:ring-1 focus:ring-indigo-500 outline-none"
+                <input
+                  type="text"
+                  className="w-full mt-1 bg-slate-900 border border-slate-700 rounded-md p-2 text-sm focus:ring-1 focus:ring-indigo-500 outline-none"
                   value={config.artStyle}
                   onChange={(e) => handleChange('artStyle', e.target.value)}
                   disabled={disabled}
-                >
-                  <option>Hyper-Realistic</option>
-                  <option>Studio Ghibli Anime</option>
-                  <option>Oil Painting</option>
-                  <option>Dark Comic Book</option>
-                  <option>Cinematic 3D Render</option>
-                </select>
+                  placeholder={t.customInput}
+                />
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {ART_PRESETS.map(preset => (
+                    <button
+                      key={preset}
+                      onClick={() => handleChange('artStyle', preset)}
+                      className={`text-[9px] px-2 py-0.5 rounded border transition-colors ${config.artStyle === preset ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600'}`}
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 

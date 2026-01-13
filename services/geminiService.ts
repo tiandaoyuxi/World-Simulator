@@ -48,7 +48,8 @@ export class GeminiService {
 
       WORLD CONTEXT:
       - Setting: ${config.worldDefinition}
-      - Leads: ${config.protagonistMale} & ${config.protagonistFemale}
+      - Primary Leads: ${config.protagonistMale} & ${config.protagonistFemale}
+      - Supporting Character Pool: ${config.supportingCharacters || "None defined."}
       - Core Conflict: ${config.storyOutline}
       - Tone: ${config.narrativeStyle}
       - Visual Aesthetic: ${config.artStyle}
@@ -62,9 +63,13 @@ export class GeminiService {
 
       STORYTELLING RULES:
       1. NARRATIVE BRANCHING: Analyze the history. Each turn should feel like a meaningful consequence of previous actions.
-      2. CHARACTER DEPTH: Dialogue should reveal shifting relationships.
-      3. CAUSALITY: Explicitly consider how this turn affects future paths.
-      4. VISUAL PROMPT: Create a detailed DALL-E style prompt (in English for the image generator) for a cinematic image reflecting the scene.
+      2. DYNAMIC CHARACTERS: 
+         - Use characters from the 'Supporting Character Pool' when narratively appropriate. 
+         - DO NOT have every supporting character appear in every turn. 
+         - Characters should enter or leave scenes naturally based on the logic of the dialogue and situation.
+      3. CHARACTER DEPTH: Dialogue should reveal shifting relationships.
+      4. CAUSALITY: Explicitly consider how this turn affects future paths.
+      5. VISUAL PROMPT: Create a detailed DALL-E style prompt (in English for the image generator) for a cinematic image reflecting the scene.
 
       Return the response as JSON.
     `;
@@ -152,8 +157,9 @@ export class GeminiService {
       1. Plot Consistency: Does the logic hold up?
       2. Character Development: Is there growth or depth in ${config.protagonistMale} and ${config.protagonistFemale}?
       3. World Building: How well is the setting utilized?
-      4. Thematic Depth: Are there meaningful underlying messages?
-      5. Provide an overall score (1-10) and suggestions for future turns.
+      4. Supporting Cast: Does the appearance and exit of secondary characters feel natural?
+      5. Thematic Depth: Are there meaningful underlying messages?
+      6. Provide an overall score (1-10) and suggestions for future turns.
 
       Return the evaluation in JSON format.
     `;
